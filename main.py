@@ -1,19 +1,19 @@
 from garminconnect import Garmin
 from dotenv import load_dotenv
 import os
+import json
 
 def main():
   load_dotenv()
-  client = Garmin()
-  # client = Garmin(
-  #   os.getenv("GARMIN_EMAIL"),
-  #   os.getenv("GARMIN_PASSWORD"),
-  # )
+  client = Garmin(
+    os.getenv("GARMIN_EMAIL"),
+    os.getenv("GARMIN_PASSWORD")
+  )
+
   client.login(".garminconnect")
 
-  activities = client.get_activities(0, 10)
-  for a in activities:
-    print(a.get("activityName"), a.get("startTimeLocal"))
+  sleep = client.get_sleep_data("2026-05-30")
+  print(json.dumps(sleep["dailySleepDTO"], indent=2, ensure_ascii=False))
 
 if __name__ == "__main__":
   main()
